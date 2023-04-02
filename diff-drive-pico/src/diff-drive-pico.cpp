@@ -2,10 +2,10 @@
 
 namespace diff_drive_pico
 {
-    CallbackReturn DiffDrivePico::on_init(const HardwareInfo &hardware_info)
+    CallbackReturn DiffDrivePico::on_init(const hardware_interface::HardwareInfo &hardware_info)
     {
         if (
-            ActuatorInterface::on_init(hardware_info) !=
+            hardware_interface::ActuatorInterface::on_init(hardware_info) !=
             CallbackReturn::SUCCESS)
         {
             CallbackReturn::ERROR;
@@ -73,6 +73,19 @@ namespace diff_drive_pico
         }
 
         return CallbackReturn::SUCCESS;
+    }
+
+    std::vector<hardware_interface::StateInterface> DiffDrivePico::export_state_interfaces(){
+        std::vector<hardware_interface::StateInterface> state_interfaces;
+        for (auto i = 0u; i < info_.joints.size(); i++)
+        {
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+            info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_positions_[i]));
+            state_interfaces.emplace_back(hardware_interface::StateInterface(
+            info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_velocities_[i]));
+        }
+
+        return state_interfaces;
     }
 
     CallbackReturn DiffDrivePico::on_configure(const State &previous_state)

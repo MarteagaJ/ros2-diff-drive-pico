@@ -1,7 +1,14 @@
 #include "hardware_interface/actuator_interface.hpp"
 #include "hardware_interface/types/hardware_interface_return_values.hpp"
-// #include "hardware_interface/types/hardware_interface_type_values.hpp"
-
+#include "hardware_interface/types/hardware_interface_type_values.hpp"
+#include "hardware_interface/handle.hpp"
+#include "hardware_interface/hardware_info.hpp"
+#include "rclcpp/clock.hpp"
+#include "rclcpp/duration.hpp"
+#include "rclcpp/macros.hpp"
+#include "rclcpp/time.hpp"
+#include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
+#include "rclcpp_lifecycle/state.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include <wiringSerial.h>
 #include <chrono>
@@ -9,11 +16,7 @@
 #include <limits>
 #include <memory>
 #include <vector>
-
-// #include "hardware_interface/base_interface.hpp"
-// #include "hardware_interface/handle.hpp"
-// #include "hardware_interface/hardware_info.hpp"
-// #include "hardware_interface/types/hardware_interface_return_values.hpp"
+#include <string>
 
 
 namespace diff_drive_pico
@@ -40,11 +43,9 @@ namespace diff_drive_pico
 
         CallbackReturn on_error(const State & previous_state) override;
 
-        // CallbackReturn on_init(const HardwareInfo & hardware_info);
+        std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-        std::vector<StateInterface> export_state_interfaces() override;
-
-        std::vector<CommandInterface> export_command_interfaces() override;
+        std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
         return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
