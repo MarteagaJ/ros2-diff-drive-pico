@@ -1,33 +1,59 @@
 #include "hardware_interface/actuator_interface.hpp"
+#include "hardware_interface/types/hardware_interface_return_values.hpp"
+// #include "hardware_interface/types/hardware_interface_type_values.hpp"
+
+#include "rclcpp/rclcpp.hpp"
+#include <wiringSerial.h>
+#include <chrono>
+#include <cmath>
+#include <limits>
+#include <memory>
+#include <vector>
+
+// #include "hardware_interface/base_interface.hpp"
+// #include "hardware_interface/handle.hpp"
+// #include "hardware_interface/hardware_info.hpp"
+// #include "hardware_interface/types/hardware_interface_return_values.hpp"
+
 
 namespace diff_drive_pico
 {
-    class DiffDrivePico : public hardware_interface::ActuatorInterface 
+    class DiffDrivePico : public ActuatorInterface 
     {
 
     public:
-        DiffDrivePico(){}
+        DiffDrivePico()
+        : logger_(rclcpp::get_logger("DiffDrivePico"))
+        {}
 
-        CallbackReturn on_configure(const State & previous_state);
+        CallbackReturn on_init(const HardwareInfo & hardware_info) override;
 
-        CallbackReturn on_cleanup(const State & previous_state);
+        CallbackReturn on_configure(const State & previous_state) override;
 
-        CallbackReturn on_shutdown(const State & previous_state);
+        CallbackReturn on_cleanup(const State & previous_state) override;
 
-        CallbackReturn on_activate(const State & previous_state);
+        CallbackReturn on_shutdown(const State & previous_state) override;
 
-        CallbackReturn on_deactivate(const State & previous_state);
+        CallbackReturn on_activate(const State & previous_state) override;
 
-        CallbackReturn on_error(const State & previous_state);
+        CallbackReturn on_deactivate(const State & previous_state) override;
+
+        CallbackReturn on_error(const State & previous_state) override;
 
         // CallbackReturn on_init(const HardwareInfo & hardware_info);
 
-        std::vector<StateInterface> export_state_interfaces();
+        std::vector<StateInterface> export_state_interfaces() override;
 
-        std::vector<CommandInterface> export_command_interfaces();
+        std::vector<CommandInterface> export_command_interfaces() override;
 
-        return_type read(const rclcpp::Time & time, const rclcpp::Duration & period);
+        return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-        return_type write(const rclcpp::Time & time, const rclcpp::Duration & period);
+        return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
+
+
+    private:
+        rclcpp::Logger logger_;
+
+        std::chrono::time_point<std::chrono::system_clock> time_;
     }
 }
