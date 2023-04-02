@@ -28,15 +28,15 @@ namespace diff_drive_pico
         : logger_(rclcpp::get_logger("DiffDrivePico"))
         {}
 
-        hardware_interface::CallbackReturn on_init(const HardwareInfo & hardware_info) override;
+        hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & hardware_info) override;
 
         std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
         std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-        hardware_interface::CallbackReturn on_activate(const State & previous_state) override;
+        hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
 
-        hardware_interface::CallbackReturn on_deactivate(const State & previous_state) override;
+        hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
 
         return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
@@ -44,13 +44,13 @@ namespace diff_drive_pico
 
         
 
-        // hardware_interface::CallbackReturn on_configure(const State & previous_state) override;
+        // hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
 
-        // hardware_interface::CallbackReturn on_cleanup(const State & previous_state) override;
+        // hardware_interface::CallbackReturn on_cleanup(const rclcpp_lifecycle::State & previous_state) override;
 
-        // hardware_interface::CallbackReturn on_shutdown(const State & previous_state) override;
+        // hardware_interface::CallbackReturn on_shutdown(const rclcpp_lifecycle::State & previous_state) override;
 
-        // hardware_interface::CallbackReturn on_error(const State & previous_state) override;
+        // hardware_interface::CallbackReturn on_error(const rclcpp_lifecycle::State & previous_state) override;
 
     private:
         rclcpp::Logger logger_;

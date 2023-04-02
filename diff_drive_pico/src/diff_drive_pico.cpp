@@ -208,14 +208,14 @@ namespace diff_drive_pico
         return hardware_interface::return_type::OK;
     }
 
-    // hardware_interface::CallbackReturn DiffDrivePico::on_configure(const State &previous_state)
+    // hardware_interface::CallbackReturn DiffDrivePico::on_configure(const rclcpp_lifecycle::State &previous_state)
     // {
     //     RCLCPP_INFO(logger_, "Configuring...");
     //     RCLCPP_INFO(logger_, "Finished Configuration");
     //     return hardware_interface::CallbackReturn::SUCCESS;
     // }
 
-    // hardware_interface::CallbackReturn DiffDrivePico::on_cleanup(const State &previous_state)
+    // hardware_interface::CallbackReturn DiffDrivePico::on_cleanup(const rclcpp_lifecycle::State &previous_state)
     // {
     //     RCLCPP_INFO(logger_, "Cleaning Up...");
     //     RCLCPP_INFO(logger_, "Finished Cleaning Up");
