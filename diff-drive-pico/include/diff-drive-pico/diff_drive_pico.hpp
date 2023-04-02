@@ -31,26 +31,27 @@ namespace diff_drive_pico
 
         CallbackReturn on_init(const HardwareInfo & hardware_info) override;
 
-        CallbackReturn on_configure(const State & previous_state) override;
+        std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
-        CallbackReturn on_cleanup(const State & previous_state) override;
-
-        CallbackReturn on_shutdown(const State & previous_state) override;
+        std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
         CallbackReturn on_activate(const State & previous_state) override;
 
         CallbackReturn on_deactivate(const State & previous_state) override;
 
-        CallbackReturn on_error(const State & previous_state) override;
-
-        std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-
-        std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
-
         return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
         return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
+        
+
+        // CallbackReturn on_configure(const State & previous_state) override;
+
+        // CallbackReturn on_cleanup(const State & previous_state) override;
+
+        // CallbackReturn on_shutdown(const State & previous_state) override;
+
+        // CallbackReturn on_error(const State & previous_state) override;
 
     private:
         rclcpp::Logger logger_;
