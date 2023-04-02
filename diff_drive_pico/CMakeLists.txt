@@ -56,7 +56,7 @@ install(
 #   DESTINATION share/diff_drive_pico
 # )
 install(TARGETS diff_drive_pico
-  EXPORT diff_drive_pico
+  EXPORT export_diff_drive_pico
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
