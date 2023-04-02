@@ -20,7 +20,7 @@
 
 namespace diff_drive_pico
 {
-    class DiffDrivePico : public ActuatorInterface 
+    class DiffDrivePico : public hardware_interface::ActuatorInterface 
     {
 
     public:
@@ -56,5 +56,5 @@ namespace diff_drive_pico
         rclcpp::Logger logger_;
 
         std::chrono::time_point<std::chrono::system_clock> time_;
-    }
+    };
 }
