@@ -2,13 +2,13 @@
 
 namespace diff_drive_pico
 {
-    CallbackReturn DiffDrivePico::on_init(const hardware_interface::HardwareInfo &hardware_info)
+    hardware_interface::CallbackReturn DiffDrivePico::on_init(const hardware_interface::HardwareInfo &hardware_info)
     {
         if (
             hardware_interface::ActuatorInterface::on_init(hardware_info) !=
-            CallbackReturn::SUCCESS)
+            hardware_interface::CallbackReturn::SUCCESS)
         {
-            CallbackReturn::ERROR;
+            hardware_interface::CallbackReturn::ERROR;
         }
 
         base_x_ = 0.0;
@@ -32,7 +32,7 @@ namespace diff_drive_pico
                     rclcpp::get_logger("AutonomousWaiterSystemHardware"),
                     "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
                     joint.command_interfaces.size());
-                return CallbackReturn::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.command_interfaces[0].name != hardware_interface::HW_IF_VELOCITY)
@@ -41,7 +41,7 @@ namespace diff_drive_pico
                     rclcpp::get_logger("AutonomousWaiterSystemHardware"),
                     "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
                     joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_VELOCITY);
-                return CallbackReturn::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.state_interfaces.size() != 2)
@@ -50,7 +50,7 @@ namespace diff_drive_pico
                     rclcpp::get_logger("AutonomousWaiterSystemHardware"),
                     "Joint '%s' has %zu state interface. 2 expected.", joint.name.c_str(),
                     joint.state_interfaces.size());
-                return CallbackReturn::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
@@ -59,7 +59,7 @@ namespace diff_drive_pico
                     rclcpp::get_logger("AutonomousWaiterSystemHardware"),
                     "Joint '%s' have '%s' as first state interface. '%s' expected.", joint.name.c_str(),
                     joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
-                return CallbackReturn::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
 
             if (joint.state_interfaces[1].name != hardware_interface::HW_IF_VELOCITY)
@@ -68,11 +68,11 @@ namespace diff_drive_pico
                     rclcpp::get_logger("AutonomousWaiterSystemHardware"),
                     "Joint '%s' have '%s' as second state interface. '%s' expected.", joint.name.c_str(),
                     joint.state_interfaces[1].name.c_str(), hardware_interface::HW_IF_VELOCITY);
-                return CallbackReturn::ERROR;
+                return hardware_interface::CallbackReturn::ERROR;
             }
         }
 
-        return CallbackReturn::SUCCESS;
+        return hardware_interface::CallbackReturn::SUCCESS;
     }
 
     std::vector<hardware_interface::StateInterface> DiffDrivePico::export_state_interfaces()
@@ -101,7 +101,7 @@ namespace diff_drive_pico
         return command_interfaces;
     }
 
-    CallbackReturn DiffDrivePico::on_activate(
+    hardware_interface::CallbackReturn DiffDrivePico::on_activate(
         const rclcpp_lifecycle::State & /*previous_state*/)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -128,10 +128,10 @@ namespace diff_drive_pico
 
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully activated!");
 
-        return CallbackReturn::SUCCESS;
+        return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    CallbackReturn DiffDrivePico::on_deactivate(
+    hardware_interface::CallbackReturn DiffDrivePico::on_deactivate(
         const rclcpp_lifecycle::State & /*previous_state*/)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -147,10 +147,10 @@ namespace diff_drive_pico
 
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully deactivated!");
 
-        return CallbackReturn::SUCCESS;
+        return hardware_interface::CallbackReturn::SUCCESS;
     }
 
-    return_type DiffDrivePico::read(
+    hardware_interface::return_type DiffDrivePico::read(
         const rclcpp::Time & /*time*/, const rclcpp::Duration &period)
     {
         double radius = 0.02; // radius of the wheels
@@ -186,10 +186,10 @@ namespace diff_drive_pico
             base_x_, base_y_, base_theta_);
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
-        return return_type::OK;
+        return hardware_interface::return_type::OK;
     }
 
-    return_type DiffDrivePico::write(
+    hardware_interface::return_type DiffDrivePico::write(
         const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -205,24 +205,24 @@ namespace diff_drive_pico
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
-        return return_type::OK;
+        return hardware_interface::return_type::OK;
     }
 
-    // CallbackReturn DiffDrivePico::on_configure(const State &previous_state)
+    // hardware_interface::CallbackReturn DiffDrivePico::on_configure(const State &previous_state)
     // {
     //     RCLCPP_INFO(logger_, "Configuring...");
     //     RCLCPP_INFO(logger_, "Finished Configuration");
-    //     return CallbackReturn::SUCCESS;
+    //     return hardware_interface::CallbackReturn::SUCCESS;
     // }
 
-    // CallbackReturn DiffDrivePico::on_cleanup(const State &previous_state)
+    // hardware_interface::CallbackReturn DiffDrivePico::on_cleanup(const State &previous_state)
     // {
     //     RCLCPP_INFO(logger_, "Cleaning Up...");
     //     RCLCPP_INFO(logger_, "Finished Cleaning Up");
-    //     return CallbackReturn::SUCCESS;
+    //     return hardware_interface::CallbackReturn::SUCCESS;
     // }
 
-    // return_type DiffDrivePico::write(const rclcpp::Time &time, const rclcpp::Duration &period)
+    // hardware_interface::return_type DiffDrivePico::write(const rclcpp::Time &time, const rclcpp::Duration &period)
     // {
     //     int fd;
 
