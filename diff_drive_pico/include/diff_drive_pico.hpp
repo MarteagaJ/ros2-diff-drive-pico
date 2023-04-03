@@ -57,8 +57,8 @@ namespace diff_drive_pico
         std::chrono::time_point<std::chrono::system_clock> time_;
 
         // Parameters for the DiffBot simulation
-        double hw_start_sec_;
-        double hw_stop_sec_;
+        // double hw_start_sec_;
+        // double hw_stop_sec_;
 
         // Store the command for the simulated robot
         std::vector<double> hw_commands_;
