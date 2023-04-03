@@ -30,6 +30,7 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
+#include <cstdio>
 
 
 namespace diff_drive_pico
