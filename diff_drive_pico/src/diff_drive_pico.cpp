@@ -8,7 +8,7 @@ namespace diff_drive_pico
             hardware_interface::ActuatorInterface::on_init(hardware_info) !=
             hardware_interface::CallbackReturn::SUCCESS)
         {
-            hardware_interface::CallbackReturn::ERROR;
+            return hardware_interface::CallbackReturn::ERROR;
         }
 
         base_x_ = 0.0;
