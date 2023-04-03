@@ -195,6 +195,8 @@ namespace diff_drive_pico
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
 
+        // lcmInstance.publish(CONTROLLER_PATH_CHANNEL, &path);
+
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {
             // Simulate sending commands to the hardware
