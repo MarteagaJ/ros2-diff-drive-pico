@@ -11,7 +11,7 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include "lcm-cpp.hpp"
+#include <lcm/lcm-cpp.hpp>
 #include <lcmtypes/mbot_motor_command_t.hpp>
 #include <lcmtypes/odometry_t.hpp>
 #include <lcmtypes/pose_xyt_t.hpp>
@@ -30,7 +30,6 @@
 #include <vector>
 #include <string>
 #include <stdint.h>
-#include <cstdio>
 
 
 namespace diff_drive_pico
