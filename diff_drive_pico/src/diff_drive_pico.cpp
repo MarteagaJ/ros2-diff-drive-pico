@@ -151,7 +151,7 @@ namespace diff_drive_pico
     }
 
     hardware_interface::return_type DiffDrivePico::read(
-        const rclcpp::Time & /*time*/, const rclcpp::Duration &period)
+        const rclcpp::Time & time, const rclcpp::Duration &period)
     {
         double radius = 0.02; // radius of the wheels
         double dist_w = 0.1;  // distance between the wheels
@@ -190,7 +190,7 @@ namespace diff_drive_pico
     }
 
     hardware_interface::return_type DiffDrivePico::write(
-        const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
+        const rclcpp::Time & time, const rclcpp::Duration & period)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");

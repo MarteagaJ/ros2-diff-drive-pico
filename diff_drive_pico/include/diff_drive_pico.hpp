@@ -10,6 +10,18 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 #include "rclcpp/rclcpp.hpp"
+
+#include <lcm/lcm-cpp.hpp>
+#include <lcmtypes/mbot_motor_command_t.hpp>
+#include <lcmtypes/odometry_t.hpp>
+#include <lcmtypes/pose_xyt_t.hpp>
+#include <lcmtypes/robot_path_t.hpp>
+#include <lcmtypes/timestamp_t.hpp>
+#include <lcmtypes/message_received_t.hpp>
+#include <common/pose_trace.hpp>
+#include <common/lcm_config.h>
+#include <common/timestamp.h>
+
 #include <chrono>
 #include <cmath>
 #include <limits>
