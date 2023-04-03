@@ -107,12 +107,12 @@ namespace diff_drive_pico
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Activating ...please wait...");
 
-        for (auto i = 0; i < hw_start_sec_; i++)
-        {
-            rclcpp::sleep_for(std::chrono::seconds(1));
-            RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%.1f seconds left...", hw_start_sec_ - i);
-        }
+        // for (auto i = 0; i < hw_start_sec_; i++)
+        // {
+        //     rclcpp::sleep_for(std::chrono::seconds(1));
+        //     RCLCPP_INFO(
+        //         rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%.1f seconds left...", hw_start_sec_ - i);
+        // }
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
         // set some default values
@@ -137,12 +137,12 @@ namespace diff_drive_pico
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Deactivating ...please wait...");
 
-        for (auto i = 0; i < hw_stop_sec_; i++)
-        {
-            rclcpp::sleep_for(std::chrono::seconds(1));
-            RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%.1f seconds left...", hw_stop_sec_ - i);
-        }
+        // for (auto i = 0; i < hw_stop_sec_; i++)
+        // {
+        //     rclcpp::sleep_for(std::chrono::seconds(1));
+        //     RCLCPP_INFO(
+        //         rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%.1f seconds left...", hw_stop_sec_ - i);
+        // }
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully deactivated!");
