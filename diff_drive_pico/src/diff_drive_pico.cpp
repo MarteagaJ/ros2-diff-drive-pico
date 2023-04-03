@@ -14,7 +14,7 @@ namespace diff_drive_pico
         base_x_ = 0.0;
         base_y_ = 0.0;
         base_theta_ = 0.0;
-        time_ = 0;
+        time_num_ = 0;
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // hw_start_sec_ = std::stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -196,8 +196,8 @@ namespace diff_drive_pico
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
         mbot_motor_command_t cmd;
-        cmd.utime = time_;
-        time_++;
+        cmd.utime = time_num_;
+        time_num_++;
         cmd.trans_v = 2;
         cmd.angular_v = 2;
         lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
