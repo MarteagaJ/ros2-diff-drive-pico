@@ -206,7 +206,7 @@ namespace diff_drive_pico
         {
             // Simulate sending commands to the hardware
             RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v, 
+                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time "PRId64"!", cmd.trans_v, 
                 cmd.angular_v, 
                 cmd.utime);
         }

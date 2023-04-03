@@ -71,7 +71,7 @@ namespace diff_drive_pico
         rclcpp::Logger logger_;
         std::chrono::time_point<std::chrono::system_clock> time_;
         lcm::LCM lcmInstance_;
-        uint64_t time_num_;
+        int64_t time_num_;
 
         // Parameters for the DiffBot simulation
         // double hw_start_sec_;
