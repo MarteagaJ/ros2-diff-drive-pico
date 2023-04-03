@@ -14,6 +14,7 @@ namespace diff_drive_pico
         base_x_ = 0.0;
         base_y_ = 0.0;
         base_theta_ = 0.0;
+        time_ = 0;
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // hw_start_sec_ = std::stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -194,15 +195,20 @@ namespace diff_drive_pico
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
-
-        // lcmInstance.publish(CONTROLLER_PATH_CHANNEL, &path);
+        mbot_motor_command_t cmd;
+        cmd.utime = time_;
+        time_++;
+        cmd.trans_v = 2;
+        cmd.angular_v = 2;
+        lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
 
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {
             // Simulate sending commands to the hardware
             RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got command %.5f for '%s'!", hw_commands_[i],
-                info_.joints[i].name.c_str());
+                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v, 
+                cmd.angular_v, 
+                cmd.utime);
         }
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
         // END: This part here is for exemplary purposes - Please do not copy to your production code
