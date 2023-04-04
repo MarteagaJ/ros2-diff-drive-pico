@@ -12,6 +12,7 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include <lcm/lcm-cpp.hpp>
+#include <lcm/lcm.h>
 #include "../lcmtypes/mbot_motor_command_t.hpp"
 // #include "lcmtypes/odometry_t.hpp"
 // #include "lcmtypes/pose_xyt_t.hpp"
