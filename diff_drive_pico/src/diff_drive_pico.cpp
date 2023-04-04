@@ -195,6 +195,7 @@ namespace diff_drive_pico
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
+        lcm::LCM lcmInstance_(MULTICAST_URL);
         mbot_motor_command_t cmd;
         cmd.utime = time_num_;
         time_num_++;
