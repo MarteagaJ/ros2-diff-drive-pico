@@ -11,7 +11,6 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "rclcpp/rclcpp.hpp"
 
-#include <lcm/lcm.h>
 #include <lcm/lcm-cpp.hpp>
 #include "../lcmtypes/mbot_motor_command_t.hpp"
 // #include "lcmtypes/odometry_t.hpp"
@@ -71,7 +70,7 @@ namespace diff_drive_pico
     private:
         rclcpp::Logger logger_;
         std::chrono::time_point<std::chrono::system_clock> time_;
-        lcm::LCM lcmInstance_;
+        lcm::LCM * lcmInstance_;
         int64_t time_num_;
 
         // Parameters for the DiffBot simulation
