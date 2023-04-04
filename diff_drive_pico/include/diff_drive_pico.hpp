@@ -39,9 +39,10 @@ namespace diff_drive_pico
 
     public:
         DiffDrivePico()
-        :  logger_(rclcpp::get_logger("DiffDrivePico")),
-           lcmInstance_(MULTICAST_URL)
-        {}
+        :  logger_(rclcpp::get_logger("DiffDrivePico"))
+        {
+            // lcmInstance_(MULTICAST_URL);
+        }
 
         hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & hardware_info) override;
 
@@ -70,7 +71,7 @@ namespace diff_drive_pico
     private:
         rclcpp::Logger logger_;
         std::chrono::time_point<std::chrono::system_clock> time_;
-        lcm::LCM lcmInstance_;
+        lcm::LCM lcmInstance_(MULTICAST_URL);
         int64_t time_num_;
 
         // Parameters for the DiffBot simulation
