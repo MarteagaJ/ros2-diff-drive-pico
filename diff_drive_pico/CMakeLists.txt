@@ -11,7 +11,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   pluginlib
   rclcpp
   rclcpp_lifecycle
-  #lcm
+  lcm
 )
 
 # find dependencies
@@ -26,6 +26,9 @@ add_library(
   SHARED
   src/diff_drive_pico.cpp
 )
+
+# target_link_libraries(diff_drive_pico )
+
 target_compile_features(diff_drive_pico PUBLIC cxx_std_11)
 target_include_directories(diff_drive_pico PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
