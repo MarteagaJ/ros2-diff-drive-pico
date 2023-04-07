@@ -12,13 +12,14 @@
 #include "rclcpp/rclcpp.hpp"
 
 #include <lcm/lcm-cpp.hpp>
-#include <lcm/lcm.h>
-#include "../lcmtypes/mbot_motor_command_t.hpp"
+#include "mbot_motor_command_t.hpp"
+#include "message_received_t.hpp"
+// #include "../lcmtypes/mbot_motor_command_t.hpp"
 // #include "lcmtypes/odometry_t.hpp"
 // #include "lcmtypes/pose_xyt_t.hpp"
 // #include "lcmtypes/robot_path_t.hpp"
 // #include "lcmtypes/timestamp_t.hpp"
-#include "../lcmtypes/message_received_t.hpp"
+// #include "../lcmtypes/message_received_t.hpp"
 // #include "common/pose_trace.hpp"
 #include "../common/lcm_config.h"
 #include "../common/timestamp.h"

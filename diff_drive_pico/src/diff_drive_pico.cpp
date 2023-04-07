@@ -195,6 +195,7 @@ namespace diff_drive_pico
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
+        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Test");
         lcm::LCM lcmInstance_(MULTICAST_URL);
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Not An LCM overall library issue...");
         mbot_motor_command_t cmd;
