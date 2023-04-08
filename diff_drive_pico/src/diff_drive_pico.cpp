@@ -201,7 +201,7 @@ namespace diff_drive_pico
         mbot_motor_command_t cmd;
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Success!! Continuing Writing...");
         timestamp_t time;
-        time.utime = time_num_
+        time.utime = time_num_;
         cmd.utime = time_num_;
         time_num_++;
         cmd.trans_v = 2;
