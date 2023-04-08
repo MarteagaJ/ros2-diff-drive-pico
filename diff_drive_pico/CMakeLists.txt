@@ -11,7 +11,6 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   pluginlib
   rclcpp
   rclcpp_lifecycle
-  # lcm
 )
 
 # find dependencies
@@ -27,7 +26,9 @@ add_library(
   src/diff_drive_pico.cpp
 )
 
-# target_link_libraries(diff_drive_pico )
+find_package(lcm REQUIRED)
+target_link_libraries(diff_drive_pico PUBLIC ${LCM_NAMESPACE}lcm)
+
 
 target_compile_features(diff_drive_pico PUBLIC cxx_std_11)
 target_include_directories(diff_drive_pico PUBLIC
@@ -45,6 +46,10 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE "DIFF_DRIVE_PICO_BUILDING_DLL
 
 # Export hardware plugins
 pluginlib_export_plugin_description_file(hardware_interface diff_drive_pico.xml)
+
+## EXPORTS
+ament_export_targets(export_diff_drive_pico HAS_LIBRARY_TARGET)
+ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 
 # INSTALL
 install(
@@ -70,7 +75,4 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
 endif()
 
-## EXPORTS
-ament_export_targets(export_diff_drive_pico HAS_LIBRARY_TARGET)
-ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS})
 ament_package()
