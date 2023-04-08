@@ -200,11 +200,14 @@ namespace diff_drive_pico
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Not An LCM overall library issue...");
         mbot_motor_command_t cmd;
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Success!! Continuing Writing...");
+        timestamp_t time;
+        time.utime = time_num_
         cmd.utime = time_num_;
         time_num_++;
         cmd.trans_v = 2;
         cmd.angular_v = 2;
         lcmInstance_.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
+        lcmInstance_.publish(MBOT_TIMESYNC_CHANNEL, &time);
 
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {

@@ -14,6 +14,7 @@
 #include <lcm/lcm-cpp.hpp>
 #include "mbot_motor_command_t.hpp"
 #include "message_received_t.hpp"
+#include "timestamp_t.hpp"
 // #include "../lcmtypes/mbot_motor_command_t.hpp"
 // #include "lcmtypes/odometry_t.hpp"
 // #include "lcmtypes/pose_xyt_t.hpp"
@@ -22,7 +23,7 @@
 // #include "../lcmtypes/message_received_t.hpp"
 // #include "common/pose_trace.hpp"
 #include "../common/lcm_config.h"
-#include "../common/timestamp.h"
+// #include "../common/timestamp.h"
 #include "../common/mbot_channels.h"
 
 #include <chrono>
