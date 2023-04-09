@@ -195,16 +195,19 @@ namespace diff_drive_pico
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Test");
-        lcm::LCM lcmInstance_(MULTICAST_URL);
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Not An LCM overall library issue...");
+        lcm::LCM lcmInstance(MULTICAST_URL);
+        if(!lcmInstance.good()) {
+            RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
+        }
         mbot_motor_command_t cmd;
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Success!! Continuing Writing...");
+        timestamp_t timesync;
+        timesync.utime = time_num_;
         cmd.utime = time_num_;
         time_num_++;
-        cmd.trans_v = 2;
-        cmd.angular_v = 2;
-        lcmInstance_.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
+        cmd.trans_v = 0.3;
+        cmd.angular_v = 0.0;
+        lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
+        lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timesync);
 
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {
