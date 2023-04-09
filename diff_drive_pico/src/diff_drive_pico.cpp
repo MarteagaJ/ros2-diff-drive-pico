@@ -206,8 +206,8 @@ namespace diff_drive_pico
         time_num_++;
         cmd.trans_v = 2;
         cmd.angular_v = 2;
-        lcmInstance_.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
-        lcmInstance_.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
+        lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
+        lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
 
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {
