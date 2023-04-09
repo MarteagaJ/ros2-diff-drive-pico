@@ -106,7 +106,7 @@ namespace diff_drive_pico
         const rclcpp_lifecycle::State & /*previous_state*/)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Activating ...please wait...");
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Activating ...please wait...");
 
         // for (auto i = 0; i < hw_start_sec_; i++)
         // {
@@ -136,7 +136,7 @@ namespace diff_drive_pico
         const rclcpp_lifecycle::State & /*previous_state*/)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Deactivating ...please wait...");
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Deactivating ...please wait...");
 
         // for (auto i = 0; i < hw_stop_sec_; i++)
         // {
@@ -200,14 +200,14 @@ namespace diff_drive_pico
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
         mbot_motor_command_t cmd;
-        timestamp_t timesync;
-        timesync.utime = time_num_;
+        timestamp_t timestamp;
+        timestamp.utime = time_num_;
         cmd.utime = time_num_;
         time_num_++;
-        cmd.trans_v = 0.3;
-        cmd.angular_v = 0.0;
-        lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
-        lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timesync);
+        cmd.trans_v = 2;
+        cmd.angular_v = 2;
+        lcmInstance_.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
+        lcmInstance_.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
 
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {
@@ -222,37 +222,6 @@ namespace diff_drive_pico
 
         return hardware_interface::return_type::OK;
     }
-
-    // hardware_interface::CallbackReturn DiffDrivePico::on_configure(const rclcpp_lifecycle::State &previous_state)
-    // {
-    //     RCLCPP_INFO(logger_, "Configuring...");
-    //     RCLCPP_INFO(logger_, "Finished Configuration");
-    //     return hardware_interface::CallbackReturn::SUCCESS;
-    // }
-
-    // hardware_interface::CallbackReturn DiffDrivePico::on_cleanup(const rclcpp_lifecycle::State &previous_state)
-    // {
-    //     RCLCPP_INFO(logger_, "Cleaning Up...");
-    //     RCLCPP_INFO(logger_, "Finished Cleaning Up");
-    //     return hardware_interface::CallbackReturn::SUCCESS;
-    // }
-
-    // hardware_interface::return_type DiffDrivePico::write(const rclcpp::Time &time, const rclcpp::Duration &period)
-    // {
-    //     int fd;
-
-    //     if ((fd = serialOpen("/dev/ttyACM0", 9600)) < 0)
-    //     {
-    //         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-    //         return 1;
-    //     }
-
-    //     for (;;)
-    //     {
-    //         putchar(serialGetchar(fd));
-    //         fflush(stdout);
-    //     }
-    // }
 }
 
 #include "pluginlib/class_list_macros.hpp"
