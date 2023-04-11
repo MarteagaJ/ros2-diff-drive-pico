@@ -204,7 +204,7 @@ namespace diff_drive_pico
         // timestamp.utime = time_num_;
         cmd.utime = time_num_;
         time_num_++;
-        cmd.trans_v = hw_commands_[i];
+        cmd.trans_v = hw_commands_[0];
         cmd.angular_v = 0.0;
         lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
         // lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
