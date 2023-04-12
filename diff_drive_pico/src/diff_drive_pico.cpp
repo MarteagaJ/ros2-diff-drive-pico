@@ -165,10 +165,10 @@ namespace diff_drive_pico
             hw_velocities_[i] = hw_commands_[i];
 
             // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-            RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"),
-                "Got position state %.5f and velocity state %.5f for '%s'!", hw_positions_[i],
-                hw_velocities_[i], info_.joints[i].name.c_str());
+            // RCLCPP_INFO(
+            //     rclcpp::get_logger("AutonomousWaiterSystemHardware"),
+            //     "Got position state %.5f and velocity state %.5f for '%s'!", hw_positions_[i],
+            //     hw_velocities_[i], info_.joints[i].name.c_str());
             // END: This part here is for exemplary purposes - Please do not copy to your production code
         }
 
