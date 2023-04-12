@@ -127,7 +127,7 @@ namespace diff_drive_pico
             }
         }
 
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully activated!");
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully activated!");
 
         return hardware_interface::CallbackReturn::SUCCESS;
     }
@@ -146,7 +146,7 @@ namespace diff_drive_pico
         // }
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully deactivated!");
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Successfully deactivated!");
 
         return hardware_interface::CallbackReturn::SUCCESS;
     }
@@ -182,9 +182,9 @@ namespace diff_drive_pico
         base_theta_ += base_dtheta * period.seconds();
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-        RCLCPP_INFO(
-            rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully read! (%.5f,%.5f,%.5f)",
-            base_x_, base_y_, base_theta_);
+        // RCLCPP_INFO(
+        //     rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully read! (%.5f,%.5f,%.5f)",
+        //     base_x_, base_y_, base_theta_);
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
         return hardware_interface::return_type::OK;
@@ -194,7 +194,7 @@ namespace diff_drive_pico
         const rclcpp::Time & time, const rclcpp::Duration & period)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
         lcm::LCM lcmInstance(MULTICAST_URL);
         if(!lcmInstance.good()) {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
@@ -217,7 +217,7 @@ namespace diff_drive_pico
                 cmd.angular_v, 
                 ((int)cmd.utime));
         }
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
         return hardware_interface::return_type::OK;
