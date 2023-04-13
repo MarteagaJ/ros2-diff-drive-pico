@@ -1,0 +1,8 @@
+struct camera_t
+{
+    int64_t utime;
+
+    float dist;
+    float theta;
+    char color;
+}
