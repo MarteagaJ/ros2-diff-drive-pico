@@ -212,10 +212,10 @@ namespace diff_drive_pico
         for (auto i = 0u; i < hw_commands_.size(); i++)
         {
             // Simulate sending commands to the hardware
-            RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v, 
-                cmd.angular_v, 
-                ((int)cmd.utime));
+            // RCLCPP_INFO(
+            //     rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v, 
+            //     cmd.angular_v, 
+            //     ((int)cmd.utime));
         }
         // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
         // END: This part here is for exemplary purposes - Please do not copy to your production code
