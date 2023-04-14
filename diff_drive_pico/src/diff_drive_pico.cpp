@@ -154,6 +154,11 @@ namespace diff_drive_pico
     hardware_interface::return_type DiffDrivePico::read(
         const rclcpp::Time & time, const rclcpp::Duration &period)
     {
+        lcm::LCM lcmInstance(MULTICAST_URL);
+        if(!lcmInstance.good()) {
+            RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
+        }
+        lcmInstance.subscribe(ODOMETRY_CHANNEL);
         double radius = 0.02; // radius of the wheels
         double dist_w = 0.1;  // distance between the wheels
         for (uint i = 0; i < hw_commands_.size(); i++)
