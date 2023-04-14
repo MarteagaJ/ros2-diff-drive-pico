@@ -1,5 +1,6 @@
 #include "diff_drive_pico.hpp"
 
+
 namespace diff_drive_pico
 {
     hardware_interface::CallbackReturn DiffDrivePico::on_init(const hardware_interface::HardwareInfo &hardware_info)
@@ -10,11 +11,15 @@ namespace diff_drive_pico
         {
             return hardware_interface::CallbackReturn::ERROR;
         }
-
         base_x_ = 0.0;
         base_y_ = 0.0;
         base_theta_ = 0.0;
         time_num_ = 0;
+        offset_x = 0;
+        offset_y = 0;
+        offset_theta = 0;
+        offset_time = 0;
+        first = 1;
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // hw_start_sec_ = std::stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -158,15 +163,30 @@ namespace diff_drive_pico
         if(!lcmInstance.good()) {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
-        lcmInstance.subscribe(ODOMETRY_CHANNEL);
-        double radius = 0.02; // radius of the wheels
-        double dist_w = 0.1;  // distance between the wheels
+        lcmInstance.subscribe(ODOMETRY_CHANNEL, &DiffDrivePico::handleOdometry, this);
+        lcmInstance.handle();
+        if(first) {
+            offset_x = base_x_;
+            offset_y = base_y_;
+            offset_theta = base_theta_;
+            offset_time = time_num_;
+            first = 0;
+
+            base_x_ -= offset_x;
+            base_y_ -= offset_y;
+            base_theta_ -= offset_theta;
+            time_num_ -= offset_time;
+        }
+        // double radius = 0.02; // radius of the wheels
+        // double dist_w = 0.1;  // distance between the wheels
+        RCLCPP_INFO(
+                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%f %f %f", base_x_, base_y_, base_theta_);
         for (uint i = 0; i < hw_commands_.size(); i++)
         {
             // Simulate DiffBot wheels's movement as a first-order system
             // Update the joint status: this is a revolute joint without any limit.
             // Simply integrates
-            hw_positions_[i] = hw_positions_[1] + period.seconds() * hw_commands_[i];
+            //hw_positions_[i] = hw_positions_[1] + period.seconds() * hw_commands_[i];
             hw_velocities_[i] = hw_commands_[i];
 
             // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
@@ -179,12 +199,14 @@ namespace diff_drive_pico
 
         // Update the free-flyer, i.e. the base notation using the classical
         // wheel differentiable kinematics
-        double base_dx = 0.5 * radius * (hw_commands_[0] + hw_commands_[1]) * cos(base_theta_);
-        double base_dy = 0.5 * radius * (hw_commands_[0] + hw_commands_[1]) * sin(base_theta_);
-        double base_dtheta = radius * (hw_commands_[0] - hw_commands_[1]) / dist_w;
-        base_x_ += base_dx * period.seconds();
-        base_y_ += base_dy * period.seconds();
-        base_theta_ += base_dtheta * period.seconds();
+        // double base_dx = 0.5 * radius * (hw_commands_[0] + hw_commands_[1]) * cos(base_theta_);
+        // double base_dy = 0.5 * radius * (hw_commands_[0] + hw_commands_[1]) * sin(base_theta_);
+        // double base_dtheta = radius * (hw_commands_[0] - hw_commands_[1]) / dist_w;
+        // base_x_ += base_dx * period.seconds();
+        // base_y_ += base_dy * period.seconds();
+        // base_theta_ += base_dtheta * period.seconds();
+
+
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // RCLCPP_INFO(

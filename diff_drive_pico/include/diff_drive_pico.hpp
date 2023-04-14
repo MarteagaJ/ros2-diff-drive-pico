@@ -60,8 +60,6 @@ namespace diff_drive_pico
 
         hardware_interface::return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
-        
-
         // hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
 
         // hardware_interface::CallbackReturn on_cleanup(const rclcpp_lifecycle::State & previous_state) override;
@@ -69,6 +67,14 @@ namespace diff_drive_pico
         // hardware_interface::CallbackReturn on_shutdown(const rclcpp_lifecycle::State & previous_state) override;
 
         // hardware_interface::CallbackReturn on_error(const rclcpp_lifecycle::State & previous_state) override;
+
+        void handleOdometry(const lcm::ReceiveBuffer* buf, const std::string& channel, const odometry_t* odometry)
+    {
+        time_num_ = odometry->utime - offset_time;
+        base_x_ = odometry->x - offset_x;
+        base_y_ = odometry->y - offset_y;
+        base_theta_ = odometry->theta - offset_theta;
+    }
 
     private:
         rclcpp::Logger logger_;
@@ -86,5 +92,7 @@ namespace diff_drive_pico
 
         // Store the wheeled robot position
         double base_x_, base_y_, base_theta_;
+        int first;
+        double offset_x, offset_y, offset_theta, offset_time;
     };
 }
