@@ -186,7 +186,7 @@ namespace diff_drive_pico
             // Simulate DiffBot wheels's movement as a first-order system
             // Update the joint status: this is a revolute joint without any limit.
             // Simply integrates
-            //hw_positions_[i] = hw_positions_[1] + period.seconds() * hw_commands_[i];
+            hw_positions_[i] = hw_positions_[1] + period.seconds() * hw_commands_[i];
             hw_velocities_[i] = hw_commands_[i];
 
             // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
