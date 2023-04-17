@@ -16,6 +16,7 @@
 #include "../lcmtypes/message_received_t.hpp"
 #include "../lcmtypes/mbot_motor_command_t.hpp"
 #include "../lcmtypes/odometry_t.hpp"
+#include "../lcmtypes/mbot_encoder_t.hpp"
 #include "../lcmtypes/pose_xyt_t.hpp"
 // #include "lcmtypes/robot_path_t.hpp"
 #include "../lcmtypes/timestamp_t.hpp"
@@ -76,6 +77,15 @@ namespace diff_drive_pico
         base_theta_ = odometry->theta - offset_theta;
     }
 
+    void handleEncoders(const lcm::ReceiveBuffer* buf, const std::string& channel, const mbot_encoder_t* encoders)
+    {
+        enc_time = encoders->utime;
+        leftticks = encoders->leftticks;
+        rightticks = encoders->rightticks;
+        left_delta = encoders->left_delta;
+        right_delta = encoders->right_delta;
+    }
+
     private:
         rclcpp::Logger logger_;
         std::chrono::time_point<std::chrono::system_clock> time_;
@@ -94,5 +104,10 @@ namespace diff_drive_pico
         double base_x_, base_y_, base_theta_;
         int first;
         double offset_x, offset_y, offset_theta, offset_time;
+        int enc_time;
+        int leftticks;
+        int rightticks;
+        int left_delta;
+        int right_delta;
     };
 }

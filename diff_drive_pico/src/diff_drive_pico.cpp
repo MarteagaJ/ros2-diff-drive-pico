@@ -1,4 +1,5 @@
 #include "diff_drive_pico.hpp"
+#include <math.h>
 
 
 namespace diff_drive_pico
@@ -163,7 +164,13 @@ namespace diff_drive_pico
         if(!lcmInstance.good()) {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
+        float radius = 0.042; // radius of the wheels
+        float dist_w = 0.135;  // distance between the wheels
+        float enc2meters = ((2.0 * 3.14159 * radius) / (78.0 * 20.0));
+        int temp_l = leftticks;
+        int temp_r = rightticks;
         lcmInstance.subscribe(ODOMETRY_CHANNEL, &DiffDrivePico::handleOdometry, this);
+        lcmInstance.subscribe(MBOT_ENCODERS_CHANNEL, &DiffDrivePico::handleEncoders,this);
         lcmInstance.handle();
         if(first) {
             offset_x = base_x_;
@@ -177,17 +184,20 @@ namespace diff_drive_pico
             base_theta_ -= offset_theta;
             time_num_ -= offset_time;
         }
-        // double radius = 0.02; // radius of the wheels
-        // double dist_w = 0.1;  // distance between the wheels
-        RCLCPP_INFO(
-                rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%f %f %f", base_x_, base_y_, base_theta_);
+        // RCLCPP_INFO(
+        //         rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%f %f %f", base_x_, base_y_, base_theta_);
         for (uint i = 0; i < hw_commands_.size(); i++)
         {
             // Simulate DiffBot wheels's movement as a first-order system
             // Update the joint status: this is a revolute joint without any limit.
             // Simply integrates
-            hw_positions_[i] = hw_positions_[1] + period.seconds() * hw_commands_[i];
-            hw_velocities_[i] = hw_commands_[i];
+            if(i == 0) {
+                hw_velocities_[i] = (((leftticks - temp_l) / period.seconds()) / 20) / (2.0f * 3.14159);
+            }
+            else {
+                hw_velocities_[i] = (((rightticks -temp_r) / period.seconds()) / 20) / (2.0f * 3.14159);
+            }
+            hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
 
             // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
             // RCLCPP_INFO(
@@ -205,8 +215,6 @@ namespace diff_drive_pico
         // base_x_ += base_dx * period.seconds();
         // base_y_ += base_dy * period.seconds();
         // base_theta_ += base_dtheta * period.seconds();
-
-
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // RCLCPP_INFO(
@@ -232,7 +240,7 @@ namespace diff_drive_pico
         cmd.utime = time_num_;
         time_num_++;
         cmd.trans_v = hw_commands_[0];
-        cmd.angular_v = 0.0;
+        cmd.angular_v = hw_commands_[1];
         lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
         // lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
 
