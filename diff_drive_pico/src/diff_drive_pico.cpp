@@ -1,6 +1,4 @@
 #include "diff_drive_pico.hpp"
-#include <math.h>
-
 
 namespace diff_drive_pico
 {
@@ -21,6 +19,10 @@ namespace diff_drive_pico
         offset_theta = 0;
         offset_time = 0;
         first = 1;
+        leftticks=0;
+        rightticks=0;
+        lefttick_offset = 0;
+        righttick_offset = 0;
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // hw_start_sec_ = std::stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -158,21 +160,29 @@ namespace diff_drive_pico
     }
 
     hardware_interface::return_type DiffDrivePico::read(
-        const rclcpp::Time & time, const rclcpp::Duration &period)
+        const rclcpp::Time &time, const rclcpp::Duration &period)
     {
-        lcm::LCM lcmInstance(MULTICAST_URL);
-        if(!lcmInstance.good()) {
+        lcm::LCM lcmInstanceEncoder(MULTICAST_URL);
+        lcm::LCM lcmInstanceOdometry(MULTICAST_URL);
+        if (!lcmInstanceEncoder.good())
+        {
+            RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
+        }
+        if (!lcmInstanceOdometry.good())
+        {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
         float radius = 0.042; // radius of the wheels
-        float dist_w = 0.135;  // distance between the wheels
+        float dist_w = 0.135; // distance between the wheels
         float enc2meters = ((2.0 * 3.14159 * radius) / (78.0 * 20.0));
         int temp_l = leftticks;
         int temp_r = rightticks;
-        lcmInstance.subscribe(ODOMETRY_CHANNEL, &DiffDrivePico::handleOdometry, this);
-        lcmInstance.subscribe(MBOT_ENCODERS_CHANNEL, &DiffDrivePico::handleEncoders,this);
-        lcmInstance.handle();
-        if(first) {
+        lcmInstanceOdometry.subscribe(ODOMETRY_CHANNEL, &DiffDrivePico::handleOdometry, this);
+        lcmInstanceEncoder.subscribe(MBOT_ENCODERS_CHANNEL, &DiffDrivePico::handleEncoders, this);
+        lcmInstanceOdometry.handle();
+        lcmInstanceEncoder.handle();
+        if (first)
+        {
             offset_x = base_x_;
             offset_y = base_y_;
             offset_theta = base_theta_;
@@ -184,6 +194,8 @@ namespace diff_drive_pico
             base_theta_ -= offset_theta;
             time_num_ -= offset_time;
         }
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Leftticks: %d, and Temp_l: %d  BEFORE  State Interface Updates", leftticks, temp_l);
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  BEFORE  State Interface Updates", rightticks, temp_r);
         // RCLCPP_INFO(
         //         rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%f %f %f", base_x_, base_y_, base_theta_);
         for (uint i = 0; i < hw_commands_.size(); i++)
@@ -191,13 +203,19 @@ namespace diff_drive_pico
             // Simulate DiffBot wheels's movement as a first-order system
             // Update the joint status: this is a revolute joint without any limit.
             // Simply integrates
-            if(i == 0) {
-                hw_velocities_[i] = (((leftticks - temp_l) / period.seconds()) / 20) / (2.0f * 3.14159);
+            // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Leftticks: %d, and Temp_l: %d  DURING  State Interface Updates", leftticks, temp_l);
+            // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  DURING  State Interface Updates", rightticks, temp_r);
+            if (i == 0)
+            {
+                hw_velocities_[i] = ((leftticks - temp_l) / period.seconds()) * enc2meters / radius;
+                hw_positions_[i] = hw_positions_[i] + ((leftticks - temp_l) * enc2meters / radius);
             }
-            else {
-                hw_velocities_[i] = (((rightticks -temp_r) / period.seconds()) / 20) / (2.0f * 3.14159);
+            else
+            {
+                hw_velocities_[i] = ((rightticks - temp_r) / period.seconds()) * enc2meters / radius;
+                hw_positions_[i] = hw_positions_[i] + ((rightticks - temp_r) * enc2meters / radius);
             }
-            hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
+            // hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
 
             // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
             // RCLCPP_INFO(
@@ -226,32 +244,35 @@ namespace diff_drive_pico
     }
 
     hardware_interface::return_type DiffDrivePico::write(
-        const rclcpp::Time & time, const rclcpp::Duration & period)
+        const rclcpp::Time &time, const rclcpp::Duration &period)
     {
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Writing...");
         lcm::LCM lcmInstance(MULTICAST_URL);
-        if(!lcmInstance.good()) {
+        if (!lcmInstance.good())
+        {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
+        float radius = 0.042; // radius of the wheels
+        float dist_w = 0.135; // distance between the wheels
         mbot_motor_command_t cmd;
         // timestamp_t timestamp;
         // timestamp.utime = time_num_;
-        cmd.utime = time_num_;
+        cmd.utime = (int)time.seconds();
         time_num_++;
-        cmd.trans_v = hw_commands_[0];
-        cmd.angular_v = hw_commands_[1];
+        cmd.trans_v = hw_commands_[0] * radius;
+        cmd.angular_v = hw_commands_[1] * radius;
         lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
         // lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
 
-        for (auto i = 0u; i < hw_commands_.size(); i++)
-        {
-            // Simulate sending commands to the hardware
-            // RCLCPP_INFO(
-            //     rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v, 
-            //     cmd.angular_v, 
-            //     ((int)cmd.utime));
-        }
+        // for (auto i = 0u; i < hw_commands_.size(); i++)
+        // {
+        // Simulate sending commands to the hardware
+        RCLCPP_INFO(
+            rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v,
+            cmd.angular_v,
+            ((int)cmd.utime));
+        // }
         // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
         // END: This part here is for exemplary purposes - Please do not copy to your production code
 
@@ -261,4 +282,4 @@ namespace diff_drive_pico
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(
-  diff_drive_pico::DiffDrivePico, hardware_interface::ActuatorInterface)
+    diff_drive_pico::DiffDrivePico, hardware_interface::ActuatorInterface)

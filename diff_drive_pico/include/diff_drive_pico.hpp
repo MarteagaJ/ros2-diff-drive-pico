@@ -34,32 +34,31 @@
 #include <string>
 #include <stdint.h>
 
-
 namespace diff_drive_pico
 {
-    class DiffDrivePico : public hardware_interface::ActuatorInterface 
+    class DiffDrivePico : public hardware_interface::ActuatorInterface
     {
 
     public:
         DiffDrivePico()
-        :  logger_(rclcpp::get_logger("DiffDrivePico"))
+            : logger_(rclcpp::get_logger("DiffDrivePico"))
         {
             // lcmInstance_(MULTICAST_URL);
         }
 
-        hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo & hardware_info) override;
+        hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo &hardware_info) override;
 
         std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
         std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
-        hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State & previous_state) override;
+        hardware_interface::CallbackReturn on_activate(const rclcpp_lifecycle::State &previous_state) override;
 
-        hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State & previous_state) override;
+        hardware_interface::CallbackReturn on_deactivate(const rclcpp_lifecycle::State &previous_state) override;
 
-        hardware_interface::return_type read(const rclcpp::Time & time, const rclcpp::Duration & period) override;
+        hardware_interface::return_type read(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
-        hardware_interface::return_type write(const rclcpp::Time & time, const rclcpp::Duration & period) override;
+        hardware_interface::return_type write(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
         // hardware_interface::CallbackReturn on_configure(const rclcpp_lifecycle::State & previous_state) override;
 
@@ -69,22 +68,22 @@ namespace diff_drive_pico
 
         // hardware_interface::CallbackReturn on_error(const rclcpp_lifecycle::State & previous_state) override;
 
-        void handleOdometry(const lcm::ReceiveBuffer* buf, const std::string& channel, const odometry_t* odometry)
-    {
-        time_num_ = odometry->utime - offset_time;
-        base_x_ = odometry->x - offset_x;
-        base_y_ = odometry->y - offset_y;
-        base_theta_ = odometry->theta - offset_theta;
-    }
+        void handleOdometry(const lcm::ReceiveBuffer *buf, const std::string &channel, const odometry_t *odometry)
+        {
+            time_num_ = odometry->utime - offset_time;
+            base_x_ = odometry->x - offset_x;
+            base_y_ = odometry->y - offset_y;
+            base_theta_ = odometry->theta - offset_theta;
+        }
 
-    void handleEncoders(const lcm::ReceiveBuffer* buf, const std::string& channel, const mbot_encoder_t* encoders)
-    {
-        enc_time = encoders->utime;
-        leftticks = encoders->leftticks;
-        rightticks = encoders->rightticks;
-        left_delta = encoders->left_delta;
-        right_delta = encoders->right_delta;
-    }
+        void handleEncoders(const lcm::ReceiveBuffer *buf, const std::string &channel, const mbot_encoder_t *encoders)
+        {
+            enc_time = encoders->utime;
+            leftticks = encoders->leftticks;
+            rightticks = encoders->rightticks;
+            left_delta = encoders->left_delta;
+            right_delta = encoders->right_delta;
+        }
 
     private:
         rclcpp::Logger logger_;
@@ -105,6 +104,8 @@ namespace diff_drive_pico
         int first;
         double offset_x, offset_y, offset_theta, offset_time;
         int enc_time;
+        int lefttick_offset;
+        int righttick_offset;
         int leftticks;
         int rightticks;
         int left_delta;
