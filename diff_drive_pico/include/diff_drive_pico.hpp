@@ -104,6 +104,8 @@ namespace diff_drive_pico
         int first;
         double offset_x, offset_y, offset_theta, offset_time;
         int enc_time;
+        int lefttick_offset;
+        int righttick_offset;
         int leftticks;
         int rightticks;
         int left_delta;

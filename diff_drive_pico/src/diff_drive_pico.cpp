@@ -19,6 +19,10 @@ namespace diff_drive_pico
         offset_theta = 0;
         offset_time = 0;
         first = 1;
+        leftticks=0;
+        rightticks=0;
+        lefttick_offset = 0;
+        righttick_offset = 0;
 
         // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
         // hw_start_sec_ = std::stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -203,13 +207,13 @@ namespace diff_drive_pico
             // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  DURING  State Interface Updates", rightticks, temp_r);
             if (i == 0)
             {
-                hw_velocities_[i] = ((leftticks - temp_l) / period.seconds()) * enc2meters;
-                hw_positions_[i] = hw_positions_[i] + (leftticks - temp_l);
+                hw_velocities_[i] = ((leftticks - temp_l) / period.seconds()) * enc2meters / radius;
+                hw_positions_[i] = hw_positions_[i] + ((leftticks - temp_l) * enc2meters / radius);
             }
             else
             {
-                hw_velocities_[i] = ((rightticks - temp_r) / period.seconds()) * enc2meters;
-                hw_positions_[i] = hw_positions_[i] + (rightticks - temp_r);
+                hw_velocities_[i] = ((rightticks - temp_r) / period.seconds()) * enc2meters / radius;
+                hw_positions_[i] = hw_positions_[i] + ((rightticks - temp_r) * enc2meters / radius);
             }
             // hw_positions_[i] = hw_positions_[i] + period.seconds() * hw_velocities_[i];
 
@@ -249,13 +253,15 @@ namespace diff_drive_pico
         {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
+        float radius = 0.042; // radius of the wheels
+        float dist_w = 0.135; // distance between the wheels
         mbot_motor_command_t cmd;
         // timestamp_t timestamp;
         // timestamp.utime = time_num_;
         cmd.utime = (int)time.seconds();
         time_num_++;
-        cmd.trans_v = hw_commands_[0];
-        cmd.angular_v = hw_commands_[1];
+        cmd.trans_v = hw_commands_[0] * radius;
+        cmd.angular_v = hw_commands_[1] * radius;
         lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
         // lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
 
