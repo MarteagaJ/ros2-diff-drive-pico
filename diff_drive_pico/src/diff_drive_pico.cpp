@@ -160,7 +160,11 @@ namespace diff_drive_pico
     {
         lcm::LCM lcmInstanceEncoder(MULTICAST_URL);
         lcm::LCM lcmInstanceOdometry(MULTICAST_URL);
-        if (!lcmInstance.good())
+        if (!lcmInstanceEncoder.good())
+        {
+            RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
+        }
+        if (!lcmInstanceOdometry.good())
         {
             RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "LCM IS BADDDDD");
         }
@@ -186,8 +190,8 @@ namespace diff_drive_pico
             base_theta_ -= offset_theta;
             time_num_ -= offset_time;
         }
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Leftticks: %d, and Temp_l: %d  BEFORE  State Interface Updates", leftticks, temp_l);
-        RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  BEFORE  State Interface Updates", rightticks, temp_r);
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Leftticks: %d, and Temp_l: %d  BEFORE  State Interface Updates", leftticks, temp_l);
+        // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  BEFORE  State Interface Updates", rightticks, temp_r);
         // RCLCPP_INFO(
         //         rclcpp::get_logger("AutonomousWaiterSystemHardware"), "%f %f %f", base_x_, base_y_, base_theta_);
         for (uint i = 0; i < hw_commands_.size(); i++)
@@ -195,8 +199,8 @@ namespace diff_drive_pico
             // Simulate DiffBot wheels's movement as a first-order system
             // Update the joint status: this is a revolute joint without any limit.
             // Simply integrates
-            RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Leftticks: %d, and Temp_l: %d  DURING  State Interface Updates", leftticks, temp_l);
-            RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  DURING  State Interface Updates", rightticks, temp_r);
+            // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Leftticks: %d, and Temp_l: %d  DURING  State Interface Updates", leftticks, temp_l);
+            // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Rightticks: %d, and Temp_r: %d  DURING  State Interface Updates", rightticks, temp_r);
             if (i == 0)
             {
                 hw_velocities_[i] = ((leftticks - temp_l) / period.seconds()) * enc2meters;
