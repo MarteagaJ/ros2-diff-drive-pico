@@ -259,7 +259,7 @@ namespace diff_drive_pico
         // timestamp_t timestamp;
         // timestamp.utime = time_num_;
         cmd.utime = (int)time.seconds();
-        time_num_++;
+        //time_num_++;
         cmd.trans_v = hw_commands_[0] * radius;
         cmd.angular_v = hw_commands_[1] * radius;
         lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
@@ -268,10 +268,10 @@ namespace diff_drive_pico
         // for (auto i = 0u; i < hw_commands_.size(); i++)
         // {
         // Simulate sending commands to the hardware
-        RCLCPP_INFO(
-            rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v,
-            cmd.angular_v,
-            ((int)cmd.utime));
+        // RCLCPP_INFO(
+        //     rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Got translational command %.5f and angular command %.5f at time %d!", cmd.trans_v,
+        //     cmd.angular_v,
+        //     ((int)cmd.utime));
         // }
         // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "Joints successfully written!");
         // END: This part here is for exemplary purposes - Please do not copy to your production code
