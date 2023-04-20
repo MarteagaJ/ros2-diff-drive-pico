@@ -68,14 +68,6 @@ namespace diff_drive_pico
 
         // hardware_interface::CallbackReturn on_error(const rclcpp_lifecycle::State & previous_state) override;
 
-        void handleOdometry(const lcm::ReceiveBuffer *buf, const std::string &channel, const odometry_t *odometry)
-        {
-            time_num_ = odometry->utime - offset_time;
-            base_x_ = odometry->x - offset_x;
-            base_y_ = odometry->y - offset_y;
-            base_theta_ = odometry->theta - offset_theta;
-        }
-
         void handleEncoders(const lcm::ReceiveBuffer *buf, const std::string &channel, const mbot_encoder_t *encoders)
         {
             enc_time = encoders->utime;
@@ -87,25 +79,17 @@ namespace diff_drive_pico
 
     private:
         rclcpp::Logger logger_;
-        std::chrono::time_point<std::chrono::system_clock> time_;
-        int64_t time_num_;
 
-        // Parameters for the DiffBot simulation
-        // double hw_start_sec_;
-        // double hw_stop_sec_;
-
-        // Store the command for the simulated robot
         std::vector<double> hw_commands_;
         std::vector<double> hw_positions_;
         std::vector<double> hw_velocities_;
 
-        // Store the wheeled robot position
-        double base_x_, base_y_, base_theta_;
         int first;
-        double offset_x, offset_y, offset_theta, offset_time;
         int enc_time;
         int lefttick_offset;
         int righttick_offset;
+        int prev_ticks_l;
+        int prev_ticks_r;
         int leftticks;
         int rightticks;
         int left_delta;
