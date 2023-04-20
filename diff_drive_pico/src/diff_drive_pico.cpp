@@ -184,11 +184,13 @@ namespace diff_drive_pico
             {
                 hw_velocities_[i] = (((leftticks - lefttick_offset) - (prev_ticks_l - lefttick_offset)) / period.seconds()) * enc2meters / radius;
                 hw_positions_[i] = (leftticks - lefttick_offset) * enc2meters / radius;
+                // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "L_ENC: %d", (leftticks - lefttick_offset));
             }
             else
             {
                 hw_velocities_[i] = (((rightticks - righttick_offset) - (prev_ticks_r - righttick_offset)) / period.seconds()) * enc2meters / radius;
                 hw_positions_[i] = (rightticks - righttick_offset) * enc2meters / radius;
+                // RCLCPP_INFO(rclcpp::get_logger("AutonomousWaiterSystemHardware"), "R_ENC: %d", (rightticks - righttick_offset));
             }
 
         }
