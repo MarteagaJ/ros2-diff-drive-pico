@@ -229,7 +229,7 @@ namespace diff_drive_pico
         cmd.utime = (int)time.seconds();
         cmd.trans_v = hw_commands_[0] * radius;
         cmd.angular_v = hw_commands_[1] * radius;
-        lcmInstance.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
+        lcmInstanceMotor.publish(MBOT_MOTOR_COMMAND_CHANNEL, &cmd);
         // lcmInstance.publish(MBOT_TIMESYNC_CHANNEL, &timestamp);
 
 
